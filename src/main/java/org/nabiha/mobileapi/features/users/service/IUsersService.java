@@ -1,9 +1,7 @@
-package org.nabiha.mobileapi.users.service;
+package org.nabiha.mobileapi.features.users.service;
 
-import org.nabiha.mobileapi.users.dto.UsersRequestDTO;
-import org.nabiha.mobileapi.users.dto.UsersRequestUpdateDTO;
-import org.nabiha.mobileapi.users.dto.UsersResponseDTO;
-import org.nabiha.mobileapi.users.exception.UsersServiceBusinessException;
+import org.nabiha.mobileapi.features.users.dto.*;
+import org.nabiha.mobileapi.features.users.exception.UsersServiceBusinessException;
 
 import java.util.List;
 
@@ -18,4 +16,6 @@ public interface IUsersService {
     UsersResponseDTO update(UsersRequestUpdateDTO usersRequestUpdateDTO, Long id);
 
     String delete(Long id) throws UsersServiceBusinessException;
+
+    UsersAuthResponseDTO login(LoginRequestDTO loginRequestDTO) throws UsersServiceBusinessException;
 }

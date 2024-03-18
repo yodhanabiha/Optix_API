@@ -1,11 +1,12 @@
-package org.nabiha.mobileapi.users.mapper;
+package org.nabiha.mobileapi.features.users.mapper;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.nabiha.mobileapi.users.dto.UsersRequestDTO;
-import org.nabiha.mobileapi.users.dto.UsersRequestUpdateDTO;
-import org.nabiha.mobileapi.users.dto.UsersResponseDTO;
-import org.nabiha.mobileapi.users.UsersEntity;
+import org.nabiha.mobileapi.features.users.UsersEntity;
+import org.nabiha.mobileapi.features.users.dto.UsersRequestDTO;
+import org.nabiha.mobileapi.features.users.dto.UsersRequestUpdateDTO;
+import org.nabiha.mobileapi.features.users.dto.UsersResponseDTO;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -16,9 +17,10 @@ public class UsersJpaMapper implements IUsersMapper {
     public UsersEntity convertToEntity(UsersRequestDTO users) {
         UsersEntity usersEntity = new UsersEntity();
         usersEntity.setEmail(users.getEmail());
-        usersEntity.setPassword(users.getPassword());
+        usersEntity.setPassword(new BCryptPasswordEncoder().encode(users.getPassword()));
         usersEntity.setName(users.getName());
         usersEntity.setPhone(users.getPhone());
+        usersEntity.setRole(users.getRole());
         usersEntity.setAt_created(LocalDateTime.now());
         usersEntity.setAt_updated(LocalDateTime.now());
         return usersEntity;
@@ -32,6 +34,7 @@ public class UsersJpaMapper implements IUsersMapper {
                 usersEntity.getPassword(),
                 usersEntity.getName(),
                 usersEntity.getPhone(),
+                usersEntity.getRole(),
                 usersEntity.getAt_created(),
                 usersEntity.getAt_updated()
         );
@@ -42,6 +45,7 @@ public class UsersJpaMapper implements IUsersMapper {
         existingEntity.setEmail(updatedValues.getEmail());
         existingEntity.setName(updatedValues.getName());
         existingEntity.setPhone(updatedValues.getPhone());
+        existingEntity.setRole(updatedValues.getRole());
         existingEntity.setAt_updated(LocalDateTime.now());
         return existingEntity;
     }

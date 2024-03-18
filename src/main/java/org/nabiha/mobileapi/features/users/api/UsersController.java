@@ -1,14 +1,14 @@
-package org.nabiha.mobileapi.users.api;
+package org.nabiha.mobileapi.features.users.api;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.nabiha.mobileapi.users.dto.APIResponse;
-import org.nabiha.mobileapi.users.dto.UsersRequestDTO;
-import org.nabiha.mobileapi.users.dto.UsersRequestUpdateDTO;
-import org.nabiha.mobileapi.users.dto.UsersResponseDTO;
-import org.nabiha.mobileapi.users.service.IUsersService;
+import org.nabiha.mobileapi.config.TokenProvider;
+import org.nabiha.mobileapi.features.users.dto.*;
+import org.nabiha.mobileapi.features.users.service.IUsersService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -16,6 +16,9 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 public class UsersController implements UsersApi{
+
+    @Autowired
+    private TokenProvider tokenProvider;
 
     private final IUsersService service;
 
@@ -42,7 +45,20 @@ public class UsersController implements UsersApi{
     }
 
     @Override
-    public ResponseEntity<APIResponse<UsersResponseDTO>> findByEmail(String email) {
+    public ResponseEntity<APIResponse<UsersAuthResponseDTO>> login(@RequestBody @Valid LoginRequestDTO loginRequestDTO) {
+        UsersAuthResponseDTO usersAuthResponseDTO = service.login(loginRequestDTO);
+        APIResponse<UsersAuthResponseDTO> response = APIResponse
+                .<UsersAuthResponseDTO>builder()
+                .status("SUCCESS")
+                .results(usersAuthResponseDTO)
+                .build();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<APIResponse<UsersResponseDTO>> profile(String token) {
+        String accessToken = token.substring(7);
+        String email = tokenProvider.validateToken(accessToken);
         UsersResponseDTO usersResponseDTO = service.findByEmail(email);
         APIResponse<UsersResponseDTO> response = APIResponse
                 .<UsersResponseDTO>builder()

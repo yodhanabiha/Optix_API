@@ -1,9 +1,9 @@
-package org.nabiha.mobileapi.users;
+package org.nabiha.mobileapi.features.users;
 
-import org.nabiha.mobileapi.users.dto.APIResponse;
-import org.nabiha.mobileapi.users.dto.ErrorDTO;
-import org.nabiha.mobileapi.users.exception.UsersNotFoundException;
-import org.nabiha.mobileapi.users.exception.UsersServiceBusinessException;
+import org.nabiha.mobileapi.features.users.dto.APIResponse;
+import org.nabiha.mobileapi.features.users.dto.ErrorDTO;
+import org.nabiha.mobileapi.features.users.exception.UsersNotFoundException;
+import org.nabiha.mobileapi.features.users.exception.UsersServiceBusinessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;

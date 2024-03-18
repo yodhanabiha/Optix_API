@@ -1,14 +1,16 @@
-package org.nabiha.mobileapi.users.service;
+package org.nabiha.mobileapi.features.users.service;
 
 import lombok.AllArgsConstructor;
-import org.nabiha.mobileapi.users.dto.UsersRequestDTO;
-import org.nabiha.mobileapi.users.dto.UsersRequestUpdateDTO;
-import org.nabiha.mobileapi.users.dto.UsersResponseDTO;
-import org.nabiha.mobileapi.users.exception.UsersNotFoundException;
-import org.nabiha.mobileapi.users.exception.UsersServiceBusinessException;
-import org.nabiha.mobileapi.users.mapper.IUsersMapper;
-import org.nabiha.mobileapi.users.UsersRepository;
-import org.nabiha.mobileapi.users.UsersEntity;
+import org.nabiha.mobileapi.config.TokenProvider;
+import org.nabiha.mobileapi.features.users.dto.*;
+import org.nabiha.mobileapi.features.users.mapper.IUsersMapper;
+import org.nabiha.mobileapi.features.users.dto.JwtDto;
+import org.nabiha.mobileapi.features.users.UsersEntity;
+import org.nabiha.mobileapi.features.users.UsersRepository;
+import org.nabiha.mobileapi.features.users.exception.UsersNotFoundException;
+import org.nabiha.mobileapi.features.users.exception.UsersServiceBusinessException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -17,6 +19,9 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class UsersService implements IUsersService{
+
+    @Autowired
+    private TokenProvider tokenService;
 
     private final IUsersMapper mapper;
     private final UsersRepository repository;
@@ -50,8 +55,37 @@ public class UsersService implements IUsersService{
     }
 
     @Override
+    public UsersAuthResponseDTO login(LoginRequestDTO loginRequestDTO) {
+        UsersAuthResponseDTO usersAuthResponseDTO;
+        try {
+            UsersEntity users = repository.findByEmail(loginRequestDTO.email)
+                    .orElseThrow(() -> new UsersNotFoundException("Users not found with email" + loginRequestDTO.email));
+
+            String password = users.getPassword();
+
+            boolean pass = new BCryptPasswordEncoder().matches(loginRequestDTO.password, password);
+
+            if(pass) {
+                String accessToken = tokenService.generateAccessToken((users));
+                UsersResponseDTO usersResponseDTO = mapper.convertToDTO(users);
+                JwtDto jwtDto = new JwtDto(accessToken);
+                usersAuthResponseDTO = new UsersAuthResponseDTO(usersResponseDTO,jwtDto);
+
+            }else {
+                throw new UsersServiceBusinessException("wrong password!");
+            }
+
+        }catch (Exception ex){
+            throw new UsersServiceBusinessException(ex.getMessage());
+        }
+
+        return usersAuthResponseDTO;
+    }
+
+
+    @Override
     public List<UsersResponseDTO> findAll() {
-        List<UsersResponseDTO> usersResponseDTO = null;
+        List<UsersResponseDTO> usersResponseDTO;
         try {
 
             List<UsersEntity> users = repository.findAll();

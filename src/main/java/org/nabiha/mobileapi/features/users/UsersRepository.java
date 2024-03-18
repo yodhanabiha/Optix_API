@@ -1,4 +1,4 @@
-package org.nabiha.mobileapi.users;
+package org.nabiha.mobileapi.features.users;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

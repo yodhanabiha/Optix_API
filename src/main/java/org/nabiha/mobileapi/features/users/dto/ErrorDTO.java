@@ -1,4 +1,4 @@
-package org.nabiha.mobileapi.users.dto;
+package org.nabiha.mobileapi.features.users.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -2,14 +2,13 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.2.3'
     id 'io.spring.dependency-management' version '1.1.4'
-    id "org.springdoc.openapi-gradle-plugin" version "1.8.0"
+    id 'org.hidetake.swagger.generator' version '2.19.2'
 }
 
 group = 'org.example'
 version = '0.0.1-SNAPSHOT'
 
 java {
-    sourceCompatibility = '17'
 }
 
 repositories {
@@ -20,7 +19,13 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
-    implementation 'org.springdoc:springdoc-openapi-ui:1.6.11'
+
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-hateoas'
+    swaggerCodegen 'org.openapitools:openapi-generator-cli:7.3.0'
+    implementation 'io.swagger.core.v3:swagger-annotations:2.2.20'
+
+    implementation 'com.auth0:java-jwt:4.4.0'
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'org.postgresql:postgresql'
     annotationProcessor 'org.projectlombok:lombok'
@@ -30,9 +35,27 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+processResources {
+    dependsOn(generateSwaggerCode)}
 
-tasks {
-    forkedSpringBootRun {
-        doNotTrackState("See https://github.com/springdoc/springdoc-openapi-gradle-plugin/issues/102")
+swaggerSources {
+    petstore {
+        inputFile = file("${rootDir}/src/main/resources/api/optix.yaml")
+        code {
+            language = 'spring'
+            configFile = file("${rootDir}/src/main/resources/api/config.json")
+
+            //what to generate. Optional.
+            components = [models: true, apis: true, supportingFiles: 'ApiUtil.java']
+            dependsOn validation //first validate the yaml
+        }
     }
 }
+
+//Set generated code to sourceSet to be able to used it in the implementation
+compileJava.dependsOn swaggerSources.petstore.code
+sourceSets.main.java.srcDir "${swaggerSources.petstore.code.outputDir}/src/main/java"
+sourceSets.main.resources.srcDir "${swaggerSources.petstore.code.outputDir}/src/main/resources"
+
+
+

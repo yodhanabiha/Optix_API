@@ -1,10 +1,11 @@
-package org.nabiha.mobileapi.users.dto;
+package org.nabiha.mobileapi.features.users.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.nabiha.mobileapi.enums.UserRole;
 
 @Data
 @AllArgsConstructor
@@ -20,5 +21,6 @@ public class UsersRequestDTO {
     private String name;
     @NotBlank(message = "product phone shouldn't be NULL OR EMPTY")
     private String phone;
+    private UserRole role;
 
 }

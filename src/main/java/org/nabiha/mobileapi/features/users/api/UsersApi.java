@@ -1,10 +1,7 @@
-package org.nabiha.mobileapi.users.api;
+package org.nabiha.mobileapi.features.users.api;
 
 import jakarta.validation.Valid;
-import org.nabiha.mobileapi.users.dto.APIResponse;
-import org.nabiha.mobileapi.users.dto.UsersRequestDTO;
-import org.nabiha.mobileapi.users.dto.UsersRequestUpdateDTO;
-import org.nabiha.mobileapi.users.dto.UsersResponseDTO;
+import org.nabiha.mobileapi.features.users.dto.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,11 +9,15 @@ import java.util.List;
 
 @RequestMapping("/users")
 public interface UsersApi {
-    @PostMapping()
-    ResponseEntity<APIResponse<UsersResponseDTO>> create(@Valid @RequestBody  UsersRequestDTO users);
 
-    @GetMapping("/email/{email}")
-    ResponseEntity<APIResponse<UsersResponseDTO>> findByEmail(@PathVariable String email);
+    @PostMapping("/account/register")
+    ResponseEntity<APIResponse<UsersResponseDTO>> create(@Valid @RequestBody UsersRequestDTO users);
+
+    @PostMapping("/account/login")
+    ResponseEntity<APIResponse<UsersAuthResponseDTO>> login(@RequestBody @Valid LoginRequestDTO loginRequestDTO);
+
+    @GetMapping("/account/profile")
+    ResponseEntity<APIResponse<UsersResponseDTO>> profile(@RequestHeader("Authorization") String token);
 
     @GetMapping()
     ResponseEntity<APIResponse<List<UsersResponseDTO>>> findAll();
