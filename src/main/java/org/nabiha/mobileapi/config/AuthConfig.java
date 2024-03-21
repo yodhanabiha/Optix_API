@@ -29,7 +29,7 @@ public class AuthConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/users/account/**").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/users/*").permitAll()
-//                        .requestMatchers(HttpMethod.POST, "/api/v1/books").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/products/**").authenticated()
                         .anyRequest().authenticated())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

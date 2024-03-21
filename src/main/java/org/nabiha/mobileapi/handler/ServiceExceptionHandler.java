@@ -1,7 +1,7 @@
-package org.nabiha.mobileapi.features.users;
+package org.nabiha.mobileapi.handler;
 
-import org.nabiha.mobileapi.features.users.dto.APIResponse;
-import org.nabiha.mobileapi.features.users.dto.ErrorDTO;
+import org.nabiha.mobileapi.dtos.APIResponse;
+import org.nabiha.mobileapi.dtos.ErrorDTO;
 import org.nabiha.mobileapi.features.users.exception.UsersNotFoundException;
 import org.nabiha.mobileapi.features.users.exception.UsersServiceBusinessException;
 import org.springframework.http.HttpStatus;
@@ -15,7 +15,7 @@ import java.util.Collections;
 import java.util.List;
 
 @RestControllerAdvice
-public class UsersServiceExceptionHandler {
+public class ServiceExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public APIResponse<?> handleMethodArgumentException(MethodArgumentNotValidException exception) {

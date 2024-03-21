@@ -1,4 +1,4 @@
-package org.nabiha.mobileapi.features.users.dto;
+package org.nabiha.mobileapi.features.users.dtos;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -13,13 +13,13 @@ import org.nabiha.mobileapi.enums.UserRole;
 @EqualsAndHashCode
 public class UsersRequestDTO {
 
-    @NotBlank(message = "product email shouldn't be NULL OR EMPTY")
+    @NotBlank(message = "user email shouldn't be NULL OR EMPTY")
     private String email;
-    @NotBlank(message = "product password shouldn't be NULL OR EMPTY")
+    @NotBlank(message = "user password shouldn't be NULL OR EMPTY")
     private String password;
-    @NotBlank(message = "product name shouldn't be NULL OR EMPTY")
+    @NotBlank(message = "user name shouldn't be NULL OR EMPTY")
     private String name;
-    @NotBlank(message = "product phone shouldn't be NULL OR EMPTY")
+    @NotBlank(message = "user phone shouldn't be NULL OR EMPTY")
     private String phone;
     private UserRole role;
 

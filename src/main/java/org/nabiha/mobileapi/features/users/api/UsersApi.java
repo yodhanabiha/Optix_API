@@ -1,7 +1,8 @@
 package org.nabiha.mobileapi.features.users.api;
 
 import jakarta.validation.Valid;
-import org.nabiha.mobileapi.features.users.dto.*;
+import org.nabiha.mobileapi.dtos.APIResponse;
+import org.nabiha.mobileapi.features.users.dtos.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

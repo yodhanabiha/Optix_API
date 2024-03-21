@@ -2,9 +2,9 @@ package org.nabiha.mobileapi.features.users.service;
 
 import lombok.AllArgsConstructor;
 import org.nabiha.mobileapi.config.TokenProvider;
-import org.nabiha.mobileapi.features.users.dto.*;
+import org.nabiha.mobileapi.features.users.dtos.*;
 import org.nabiha.mobileapi.features.users.mapper.IUsersMapper;
-import org.nabiha.mobileapi.features.users.dto.JwtDto;
+import org.nabiha.mobileapi.dtos.JwtDto;
 import org.nabiha.mobileapi.features.users.UsersEntity;
 import org.nabiha.mobileapi.features.users.UsersRepository;
 import org.nabiha.mobileapi.features.users.exception.UsersNotFoundException;

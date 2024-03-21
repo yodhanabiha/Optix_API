@@ -1,24 +1,18 @@
-package org.nabiha.mobileapi.features.users.dto;
+package org.nabiha.mobileapi.features.products.dtos;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Builder
-public class APIResponse<T>{
-    private String status;
-    private List<ErrorDTO> errors;
-    private T results;
+public class ProductsResponseDTO {
+    private Long id;
+    private String title;
+    private String description;
+    private String imageurl;
+    private int price;
 }
-
-
-
-

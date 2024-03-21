@@ -1,4 +1,4 @@
-package org.nabiha.mobileapi.features.users.dto;
+package org.nabiha.mobileapi.dtos;
 
 public record JwtDto(
         String accessToken) {

@@ -1,11 +1,9 @@
 package org.nabiha.mobileapi.features.users.mapper;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.nabiha.mobileapi.features.users.UsersEntity;
-import org.nabiha.mobileapi.features.users.dto.UsersRequestDTO;
-import org.nabiha.mobileapi.features.users.dto.UsersRequestUpdateDTO;
-import org.nabiha.mobileapi.features.users.dto.UsersResponseDTO;
+import org.nabiha.mobileapi.features.users.dtos.UsersRequestDTO;
+import org.nabiha.mobileapi.features.users.dtos.UsersRequestUpdateDTO;
+import org.nabiha.mobileapi.features.users.dtos.UsersResponseDTO;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -48,15 +46,5 @@ public class UsersJpaMapper implements IUsersMapper {
         existingEntity.setRole(updatedValues.getRole());
         existingEntity.setAt_updated(LocalDateTime.now());
         return existingEntity;
-    }
-
-    @Override
-    public String jsonAsString(Object obj) {
-        try {
-            return new ObjectMapper().writeValueAsString(obj);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 }

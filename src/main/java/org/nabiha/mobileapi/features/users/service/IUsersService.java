@@ -1,6 +1,6 @@
 package org.nabiha.mobileapi.features.users.service;
 
-import org.nabiha.mobileapi.features.users.dto.*;
+import org.nabiha.mobileapi.features.users.dtos.*;
 import org.nabiha.mobileapi.features.users.exception.UsersServiceBusinessException;
 
 import java.util.List;
