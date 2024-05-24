@@ -2,7 +2,6 @@ package org.nabiha.mobileapi.features.users.mapper;
 
 import org.nabiha.mobileapi.features.users.UsersEntity;
 import org.nabiha.mobileapi.features.users.dtos.UsersRequestDTO;
-import org.nabiha.mobileapi.features.users.dtos.UsersRequestUpdateDTO;
 import org.nabiha.mobileapi.features.users.dtos.UsersResponseDTO;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -32,6 +31,7 @@ public class UsersJpaMapper implements IUsersMapper {
                 usersEntity.getPassword(),
                 usersEntity.getName(),
                 usersEntity.getPhone(),
+                null,
                 usersEntity.getRole(),
                 usersEntity.getAt_created(),
                 usersEntity.getAt_updated()
@@ -39,10 +39,11 @@ public class UsersJpaMapper implements IUsersMapper {
     }
 
     @Override
-    public UsersEntity updateEntity(UsersEntity existingEntity, UsersRequestUpdateDTO updatedValues) {
+    public UsersEntity updateEntity(UsersEntity existingEntity, UsersRequestDTO updatedValues) {
         existingEntity.setEmail(updatedValues.getEmail());
         existingEntity.setName(updatedValues.getName());
         existingEntity.setPhone(updatedValues.getPhone());
+        existingEntity.setImageurl(updatedValues.getImageurl());
         existingEntity.setRole(updatedValues.getRole());
         existingEntity.setAt_updated(LocalDateTime.now());
         return existingEntity;

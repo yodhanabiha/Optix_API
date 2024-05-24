@@ -2,7 +2,6 @@ package org.nabiha.mobileapi.features.users.mapper;
 
 import org.nabiha.mobileapi.features.users.UsersEntity;
 import org.nabiha.mobileapi.features.users.dtos.UsersRequestDTO;
-import org.nabiha.mobileapi.features.users.dtos.UsersRequestUpdateDTO;
 import org.nabiha.mobileapi.features.users.dtos.UsersResponseDTO;
 
 public interface IUsersMapper {
@@ -10,5 +9,5 @@ public interface IUsersMapper {
 
     UsersResponseDTO convertToDTO(UsersEntity usersEntity);
 
-    UsersEntity updateEntity(UsersEntity existingEntity, UsersRequestUpdateDTO updatedValues);
+    UsersEntity updateEntity(UsersEntity existingEntity, UsersRequestDTO updatedValues);
 }

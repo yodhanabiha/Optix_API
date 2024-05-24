@@ -2,8 +2,8 @@ package org.nabiha.mobileapi.handler;
 
 import org.nabiha.mobileapi.dtos.APIResponse;
 import org.nabiha.mobileapi.dtos.ErrorDTO;
-import org.nabiha.mobileapi.features.users.exception.UsersNotFoundException;
-import org.nabiha.mobileapi.features.users.exception.UsersServiceBusinessException;
+import org.nabiha.mobileapi.exception.NotFoundException;
+import org.nabiha.mobileapi.exception.ServiceBusinessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -31,16 +31,18 @@ public class ServiceExceptionHandler {
         return serviceResponse;
     }
 
-    @ExceptionHandler(UsersServiceBusinessException.class)
-    public APIResponse<?> handleServiceException(UsersServiceBusinessException exception) {
+    @ExceptionHandler(ServiceBusinessException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public APIResponse<?> handleServiceException(ServiceBusinessException exception) {
         APIResponse<?> serviceResponse = new APIResponse<>();
         serviceResponse.setStatus("FAILED");
         serviceResponse.setErrors(Collections.singletonList(new ErrorDTO("", exception.getMessage())));
         return serviceResponse;
     }
 
-    @ExceptionHandler(UsersNotFoundException.class)
-    public APIResponse<?> handleProductNotFoundException(UsersNotFoundException exception) {
+    @ExceptionHandler(NotFoundException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public APIResponse<?> handleProductNotFoundException(NotFoundException exception) {
         APIResponse<?> serviceResponse = new APIResponse<>();
         serviceResponse.setStatus("FAILED");
         serviceResponse.setErrors(Collections.singletonList(new ErrorDTO("", exception.getMessage())));

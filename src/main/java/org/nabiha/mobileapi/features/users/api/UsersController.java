@@ -4,13 +4,16 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.nabiha.mobileapi.config.TokenProvider;
 import org.nabiha.mobileapi.dtos.APIResponse;
-import org.nabiha.mobileapi.features.users.dtos.*;
+import org.nabiha.mobileapi.features.users.dtos.LoginRequestDTO;
+import org.nabiha.mobileapi.features.users.dtos.UsersAuthResponseDTO;
+import org.nabiha.mobileapi.features.users.dtos.UsersRequestDTO;
+import org.nabiha.mobileapi.features.users.dtos.UsersResponseDTO;
 import org.nabiha.mobileapi.features.users.service.IUsersService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -18,9 +21,7 @@ import java.util.List;
 @AllArgsConstructor
 public class UsersController implements UsersApi{
 
-    @Autowired
-    private TokenProvider tokenProvider;
-
+    private final TokenProvider tokenProvider;
     private final IUsersService service;
 
     @Override
@@ -70,8 +71,11 @@ public class UsersController implements UsersApi{
     }
 
     @Override
-    public ResponseEntity<APIResponse<UsersResponseDTO>> update(Long id, UsersRequestUpdateDTO users) {
-        UsersResponseDTO usersResponseDTO = service.update(users,id);
+    public ResponseEntity<APIResponse<UsersResponseDTO>> update(
+            Long id, String name,
+            String phone, MultipartFile image
+    ) {
+        UsersResponseDTO usersResponseDTO = service.update(id,name,phone,image);
         APIResponse<UsersResponseDTO> response = APIResponse
                 .<UsersResponseDTO>builder()
                 .status("SUCCESS")

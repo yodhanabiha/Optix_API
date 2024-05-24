@@ -1,0 +1,13 @@
+package org.nabiha.mobileapi.features.carts.mapper;
+
+import org.nabiha.mobileapi.features.carts.CartsEntity;
+import org.nabiha.mobileapi.features.carts.dtos.CartsRequestDTO;
+import org.nabiha.mobileapi.features.carts.dtos.CartsResponseDTO;
+
+public interface ICartsMapper {
+    CartsEntity convertToEntity(CartsRequestDTO cartsRequestDTO);
+
+    CartsEntity updateEntity(CartsEntity existingEntity,CartsRequestDTO updatedValue);
+
+    CartsResponseDTO convertToDTO(CartsEntity cartsEntity);
+}

@@ -40,6 +40,9 @@ public class UsersEntity implements UserDetails {
     private UserRole role;
 
     @Column
+    private String imageurl;
+
+    @Column
     private LocalDateTime at_created;
 
     @Column

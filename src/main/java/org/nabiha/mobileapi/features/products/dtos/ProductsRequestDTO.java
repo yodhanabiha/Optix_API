@@ -16,8 +16,7 @@ public class ProductsRequestDTO {
 
     private String description;
 
-    @NotBlank(message = "product image url shouldn't be NULL")
-    private String imageurl;
+    private String spec;
 
     @NotNull(message = "product price shouldn't be NULL")
     private int price;

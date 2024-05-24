@@ -2,39 +2,40 @@ package org.nabiha.mobileapi.features.users.service;
 
 import lombok.AllArgsConstructor;
 import org.nabiha.mobileapi.config.TokenProvider;
-import org.nabiha.mobileapi.features.users.dtos.*;
-import org.nabiha.mobileapi.features.users.mapper.IUsersMapper;
 import org.nabiha.mobileapi.dtos.JwtDto;
+import org.nabiha.mobileapi.exception.NotFoundException;
+import org.nabiha.mobileapi.exception.ServiceBusinessException;
 import org.nabiha.mobileapi.features.users.UsersEntity;
 import org.nabiha.mobileapi.features.users.UsersRepository;
-import org.nabiha.mobileapi.features.users.exception.UsersNotFoundException;
-import org.nabiha.mobileapi.features.users.exception.UsersServiceBusinessException;
+import org.nabiha.mobileapi.features.users.dtos.*;
+import org.nabiha.mobileapi.features.users.mapper.IUsersMapper;
+import org.nabiha.mobileapi.services.FileStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collections;
 import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class UsersService implements IUsersService{
+public class UsersService implements IUsersService {
 
-    @Autowired
-    private TokenProvider tokenService;
-
+    private final TokenProvider tokenService;
     private final IUsersMapper mapper;
     private final UsersRepository repository;
+    private final FileStorageService fileStorageService;
 
     @Override
-    public UsersResponseDTO createUser(UsersRequestDTO usersRequestdto){
+    public UsersResponseDTO createUser(UsersRequestDTO usersRequestdto) {
         UsersResponseDTO usersResponseDTO;
         try {
             UsersEntity users = mapper.convertToEntity(usersRequestdto);
             UsersEntity usersResult = repository.save(users);
             usersResponseDTO = mapper.convertToDTO(usersResult);
-        }catch (Exception ex){
-            throw new UsersServiceBusinessException(ex.getMessage());
+        } catch (Exception ex) {
+            throw new ServiceBusinessException(ex.getMessage());
         }
         return usersResponseDTO;
     }
@@ -44,11 +45,11 @@ public class UsersService implements IUsersService{
         UsersResponseDTO usersResponseDTO;
         try {
             UsersEntity users = repository.findByEmail(email)
-                    .orElseThrow(() -> new UsersNotFoundException("Users not found with email" + email));
+                    .orElseThrow(() -> new NotFoundException("Users not found with email" + email));
 
             usersResponseDTO = mapper.convertToDTO(users);
-        }catch (Exception ex){
-            throw new UsersServiceBusinessException(ex.getMessage());
+        } catch (Exception ex) {
+            throw new ServiceBusinessException(ex.getMessage());
         }
 
         return usersResponseDTO;
@@ -59,24 +60,24 @@ public class UsersService implements IUsersService{
         UsersAuthResponseDTO usersAuthResponseDTO;
         try {
             UsersEntity users = repository.findByEmail(loginRequestDTO.email)
-                    .orElseThrow(() -> new UsersNotFoundException("Users not found with email" + loginRequestDTO.email));
+                    .orElseThrow(() -> new NotFoundException("Users not found with email " + loginRequestDTO.email));
 
             String password = users.getPassword();
 
             boolean pass = new BCryptPasswordEncoder().matches(loginRequestDTO.password, password);
 
-            if(pass) {
+            if (pass) {
                 String accessToken = tokenService.generateAccessToken((users));
                 UsersResponseDTO usersResponseDTO = mapper.convertToDTO(users);
                 JwtDto jwtDto = new JwtDto(accessToken);
-                usersAuthResponseDTO = new UsersAuthResponseDTO(usersResponseDTO,jwtDto);
+                usersAuthResponseDTO = new UsersAuthResponseDTO(usersResponseDTO, jwtDto);
 
-            }else {
-                throw new UsersServiceBusinessException("wrong password!");
+            } else {
+                throw new ServiceBusinessException("wrong password!");
             }
 
-        }catch (Exception ex){
-            throw new UsersServiceBusinessException(ex.getMessage());
+        } catch (Exception ex) {
+            throw new ServiceBusinessException(ex.getMessage());
         }
 
         return usersAuthResponseDTO;
@@ -89,34 +90,44 @@ public class UsersService implements IUsersService{
         try {
 
             List<UsersEntity> users = repository.findAll();
-            if (!users.isEmpty()){
+            if (!users.isEmpty()) {
                 usersResponseDTO = users.stream().map(mapper::convertToDTO).toList();
-            }else{
+            } else {
                 usersResponseDTO = Collections.emptyList();
             }
 
-        }catch (Exception ex){
-            throw new UsersServiceBusinessException(ex.getMessage());
+        } catch (Exception ex) {
+            throw new ServiceBusinessException(ex.getMessage());
         }
         return usersResponseDTO;
     }
 
     @Override
-    public UsersResponseDTO update(UsersRequestUpdateDTO usersRequestUpdateDTO, Long id) {
+    public UsersResponseDTO update(
+            Long id, String name,
+            String phone, MultipartFile image
+    ) {
         UsersResponseDTO usersResponseDTO;
 
         try {
             UsersEntity existingUser = repository.findById(id)
-                    .orElseThrow(() -> new UsersNotFoundException("User not found with ID: " + id));
+                    .orElseThrow(() -> new NotFoundException("User not found with ID: " + id));
 
-            UsersEntity updatedUser = mapper.updateEntity(existingUser, usersRequestUpdateDTO);
+            String imageUrl = fileStorageService.storeFile(image, "USER");
+
+            UsersRequestDTO usersRequestDTO = new UsersRequestDTO(
+                    existingUser.getEmail(), existingUser.getPassword(),
+                    name, phone, imageUrl, existingUser.getRole()
+            );
+
+            UsersEntity updatedUser = mapper.updateEntity(existingUser, usersRequestDTO);
 
             UsersEntity usersResult = repository.save(updatedUser);
 
             usersResponseDTO = mapper.convertToDTO(usersResult);
 
-        }catch (Exception ex){
-            throw new UsersServiceBusinessException(ex.getMessage());
+        } catch (Exception ex) {
+            throw new ServiceBusinessException(ex.getMessage());
         }
         return usersResponseDTO;
     }
@@ -125,9 +136,9 @@ public class UsersService implements IUsersService{
     public String delete(Long id) {
         try {
             repository.deleteById(id);
-        }catch (Exception ex){
-            throw new UsersServiceBusinessException(ex.getMessage());
+        } catch (Exception ex) {
+            throw new ServiceBusinessException(ex.getMessage());
         }
-        return "User with ID: "+id+" has been deleted";
+        return "User with ID: " + id + " has been deleted";
     }
 }

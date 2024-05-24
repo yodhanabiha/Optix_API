@@ -20,8 +20,11 @@ public class ProductsEntity {
     @Column(nullable = false)
     private String title;
 
-    @Column
+    @Column(columnDefinition = "TEXT")
     private String description;
+
+    @Column(columnDefinition = "TEXT")
+    private String spec;
 
     @Column(nullable = false)
     private String imageurl;

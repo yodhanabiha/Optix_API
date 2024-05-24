@@ -12,7 +12,6 @@ import org.nabiha.mobileapi.enums.UserRole;
 @NoArgsConstructor
 @EqualsAndHashCode
 public class UsersRequestDTO {
-
     @NotBlank(message = "user email shouldn't be NULL OR EMPTY")
     private String email;
     @NotBlank(message = "user password shouldn't be NULL OR EMPTY")
@@ -21,6 +20,7 @@ public class UsersRequestDTO {
     private String name;
     @NotBlank(message = "user phone shouldn't be NULL OR EMPTY")
     private String phone;
+    private String imageurl;
     private UserRole role;
 
 }
