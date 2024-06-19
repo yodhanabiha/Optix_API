@@ -43,6 +43,12 @@ public class UsersEntity implements UserDetails {
     private String imageurl;
 
     @Column
+    private LocalDateTime date_birth;
+
+    @Column
+    private String gender;
+
+    @Column
     private LocalDateTime at_created;
 
     @Column

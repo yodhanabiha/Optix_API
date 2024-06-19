@@ -7,6 +7,8 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.nabiha.mobileapi.enums.UserRole;
 
+import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,6 +23,8 @@ public class UsersRequestDTO {
     @NotBlank(message = "user phone shouldn't be NULL OR EMPTY")
     private String phone;
     private String imageurl;
+    private LocalDateTime date_birth;
+    private String gender;
     private UserRole role;
 
 }

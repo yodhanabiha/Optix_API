@@ -3,9 +3,7 @@ package org.nabiha.mobileapi.features.carts.dtos;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.nabiha.mobileapi.features.products.ProductsEntity;
-import org.nabiha.mobileapi.features.products.dtos.ProductsResponseDTO;
-import org.nabiha.mobileapi.features.users.UsersEntity;
+import org.nabiha.mobileapi.features.products.dtos.ProductResponseDTO;
 
 import java.time.LocalDateTime;
 @Data
@@ -13,7 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class CartsResponseDTO {
     private Long id;
-    private ProductsResponseDTO product;
+    private ProductResponseDTO product;
     private Long userId;
     private int total;
     private Boolean selected;

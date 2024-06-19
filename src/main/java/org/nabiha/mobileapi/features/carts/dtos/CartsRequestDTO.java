@@ -1,5 +1,6 @@
 package org.nabiha.mobileapi.features.carts.dtos;
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -13,10 +14,14 @@ public class CartsRequestDTO {
 
     @NotNull(message = "productId shouldn't be NULL")
     private Long productId;
+
     @NotNull(message = "userId shouldn't be NULL")
     private Long userId;
+
     @NotNull(message = "total cart shouldn't be NULL")
+    @Min(value = 1, message = "total should be greater than 0")
     private int total;
+
     @NotNull(message = "selected cart shouldn't be NULL")
     private Boolean selected;
 }

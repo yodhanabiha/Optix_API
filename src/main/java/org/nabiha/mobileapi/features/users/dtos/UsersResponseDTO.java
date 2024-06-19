@@ -20,6 +20,8 @@ public class UsersResponseDTO {
     private String phone;
     private String imageurl;
     private UserRole role;
+    private LocalDateTime date_birth;
+    private String gender;
     private LocalDateTime at_created;
     private LocalDateTime at_updated;
 }

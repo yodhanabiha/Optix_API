@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.nabiha.mobileapi.features.products.dtos.ProductResponseDTO;
+import org.nabiha.mobileapi.features.users.dtos.UsersResponseDTO;
 
 @Data
 @AllArgsConstructor
@@ -11,6 +13,6 @@ import lombok.NoArgsConstructor;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class LikesResponseDTO {
     private Long id;
-    private Long product_id;
-    private Long user_id;
+    private ProductResponseDTO product;
+    private UsersResponseDTO user;
 }

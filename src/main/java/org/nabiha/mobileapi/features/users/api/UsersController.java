@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -73,9 +74,9 @@ public class UsersController implements UsersApi{
     @Override
     public ResponseEntity<APIResponse<UsersResponseDTO>> update(
             Long id, String name,
-            String phone, MultipartFile image
+            String phone, String gender, String date_birth, MultipartFile image
     ) {
-        UsersResponseDTO usersResponseDTO = service.update(id,name,phone,image);
+        UsersResponseDTO usersResponseDTO = service.update(id,name,phone,gender,date_birth, image);
         APIResponse<UsersResponseDTO> response = APIResponse
                 .<UsersResponseDTO>builder()
                 .status("SUCCESS")

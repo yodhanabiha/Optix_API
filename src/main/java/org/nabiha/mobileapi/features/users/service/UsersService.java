@@ -15,6 +15,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
 
@@ -105,7 +108,7 @@ public class UsersService implements IUsersService {
     @Override
     public UsersResponseDTO update(
             Long id, String name,
-            String phone, MultipartFile image
+            String phone, String gender, String date_birth, MultipartFile image
     ) {
         UsersResponseDTO usersResponseDTO;
 
@@ -115,9 +118,12 @@ public class UsersService implements IUsersService {
 
             String imageUrl = fileStorageService.storeFile(image, "USER");
 
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            LocalDateTime birthDate = LocalDate.parse(date_birth, formatter).atStartOfDay();
+
             UsersRequestDTO usersRequestDTO = new UsersRequestDTO(
                     existingUser.getEmail(), existingUser.getPassword(),
-                    name, phone, imageUrl, existingUser.getRole()
+                    name, phone, imageUrl, birthDate, gender, existingUser.getRole()
             );
 
             UsersEntity updatedUser = mapper.updateEntity(existingUser, usersRequestDTO);

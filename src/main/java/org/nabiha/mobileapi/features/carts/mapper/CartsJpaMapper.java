@@ -7,7 +7,7 @@ import org.nabiha.mobileapi.features.carts.dtos.CartsRequestDTO;
 import org.nabiha.mobileapi.features.carts.dtos.CartsResponseDTO;
 import org.nabiha.mobileapi.features.products.ProductsEntity;
 import org.nabiha.mobileapi.features.products.ProductsRepository;
-import org.nabiha.mobileapi.features.products.dtos.ProductsResponseDTO;
+import org.nabiha.mobileapi.features.products.dtos.ProductResponseDTO;
 import org.nabiha.mobileapi.features.products.mapper.IProductsMapper;
 import org.nabiha.mobileapi.features.users.UsersEntity;
 import org.nabiha.mobileapi.features.users.UsersRepository;
@@ -49,13 +49,26 @@ public class CartsJpaMapper implements ICartsMapper{
 
     @Override
     public CartsResponseDTO convertToDTO(CartsEntity cartsEntity) {
-        ProductsResponseDTO productsResponseDTO = productsMapper.convertToDTO(cartsEntity.getProduct());
+        ProductResponseDTO productResponseDTO = convertToDTOProduct(cartsEntity.getProduct());
         CartsResponseDTO cartsResponseDTO = new CartsResponseDTO();
         cartsResponseDTO.setId(cartsEntity.getId());
-        cartsResponseDTO.setProduct(productsResponseDTO);
+        cartsResponseDTO.setProduct(productResponseDTO);
         cartsResponseDTO.setUserId(cartsEntity.getUser().getId());
+        cartsResponseDTO.setTotal(cartsEntity.getTotal());
         cartsResponseDTO.setAt_updated(cartsEntity.getAt_updated());
         cartsResponseDTO.setAt_created(cartsEntity.getAt_created());
         return cartsResponseDTO;
+    }
+
+    @Override
+    public ProductResponseDTO convertToDTOProduct(ProductsEntity productsEntity) {
+        return new ProductResponseDTO(
+                productsEntity.getId(),
+                productsEntity.getTitle(),
+                productsEntity.getDescription(),
+                productsEntity.getSpec(),
+                productsEntity.getImageurl(),
+                productsEntity.getPrice()
+        );
     }
 }

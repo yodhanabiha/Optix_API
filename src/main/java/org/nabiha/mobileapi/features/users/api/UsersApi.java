@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.List;
 @RequestMapping("/users")
 public interface UsersApi {
@@ -31,6 +32,8 @@ public interface UsersApi {
             @PathVariable Long id,
             @Valid @RequestPart("name") String name,
             @Valid @RequestPart("phone") String phone,
+            @Valid @RequestPart("gender") String gender,
+            @Valid @RequestPart("date_birth") String date_birth,
             @RequestPart("image") MultipartFile image
     );
 

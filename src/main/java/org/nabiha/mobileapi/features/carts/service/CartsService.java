@@ -25,14 +25,30 @@ public class CartsService implements ICartsService {
     private final ICartsMapper mapper;
     private final CartsRepository repository;
     private final UsersRepository usersRepository;
+    private final ProductsRepository productsRepository;
 
     @Override
     public CartsResponseDTO createCarts(CartsRequestDTO cartsRequestDTO) throws ServiceBusinessException {
         CartsResponseDTO cartsResponseDTO;
         try {
-            CartsEntity cartsEntity = mapper.convertToEntity(cartsRequestDTO);
-            CartsEntity cartsRes = repository.save(cartsEntity);
-            cartsResponseDTO = mapper.convertToDTO(cartsRes);
+            ProductsEntity existingProduct = productsRepository.findById(cartsRequestDTO.getProductId())
+                    .orElseThrow(() -> new NotFoundException("Carts Not found with id: " + cartsRequestDTO.getProductId()));
+
+            UsersEntity existingUser = usersRepository.findById(cartsRequestDTO.getUserId())
+                    .orElseThrow(() -> new NotFoundException("Carts Not found with id: " + cartsRequestDTO.getProductId()));
+
+            CartsEntity existingCart = repository.findByProductAndUser(existingProduct, existingUser)
+                    .orElse(null);
+            if (existingCart != null) {
+                existingCart.setTotal(existingCart.getTotal() + 1);
+                CartsEntity cartsRes = repository.save(existingCart);
+                cartsResponseDTO = mapper.convertToDTO(cartsRes);
+            } else {
+                CartsEntity cartsEntity = mapper.convertToEntity(cartsRequestDTO);
+                CartsEntity cartsRes = repository.save(cartsEntity);
+                cartsResponseDTO = mapper.convertToDTO(cartsRes);
+            }
+
 
         } catch (Exception ex) {
             throw new ServiceBusinessException(ex.getMessage());

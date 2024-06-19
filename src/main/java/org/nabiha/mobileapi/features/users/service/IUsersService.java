@@ -4,6 +4,7 @@ import org.nabiha.mobileapi.exception.ServiceBusinessException;
 import org.nabiha.mobileapi.features.users.dtos.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface IUsersService {
@@ -15,7 +16,8 @@ public interface IUsersService {
     List<UsersResponseDTO> findAll() throws ServiceBusinessException;
 
     UsersResponseDTO update(Long id, String name,
-                            String phone, MultipartFile image);
+                            String phone, String gender,
+                            String date_birth, MultipartFile image);
 
     String delete(Long id) throws ServiceBusinessException;
 

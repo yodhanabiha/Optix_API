@@ -5,9 +5,9 @@ import org.nabiha.mobileapi.features.products.dtos.ProductsRequestDTO;
 import org.nabiha.mobileapi.features.products.dtos.ProductsResponseDTO;
 
 public interface IProductsMapper {
-    ProductsEntity convertToEntity(ProductsRequestDTO users);
+    ProductsEntity convertToEntity(ProductsRequestDTO productsRequestDTO);
 
-    ProductsResponseDTO convertToDTO(ProductsEntity usersEntity);
+    ProductsResponseDTO convertToDTO(ProductsEntity productsEntity);
 
     ProductsEntity updateEntity(ProductsEntity existingEntity, ProductsRequestDTO updatedValues);
 }

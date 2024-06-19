@@ -34,7 +34,7 @@ public class AuthConfig {
                         .requestMatchers(HttpMethod.GET, "/images_user/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/swagger-ui/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/products/**").authenticated()
-                        .anyRequest().permitAll())
+                        .anyRequest().permitAll()) //kalo udah selesai ganti authenticated() todo
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }

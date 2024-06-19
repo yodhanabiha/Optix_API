@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 
 @Component
 @AllArgsConstructor
-public class ProductsJpaMapper implements IProductsMapper{
+public class ProductsJpaMapper implements IProductsMapper {
 
     private final ILikesService likesService;
 
