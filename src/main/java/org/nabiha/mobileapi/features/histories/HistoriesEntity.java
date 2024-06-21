@@ -1,12 +1,18 @@
 package org.nabiha.mobileapi.features.histories;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.nabiha.mobileapi.features.products.ProductsEntity;
+import org.nabiha.mobileapi.features.users.UsersEntity;
 
 import java.time.LocalDateTime;
-
+@Entity
+@Table(name = "histories")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class HistoriesEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -27,5 +33,19 @@ public class HistoriesEntity {
     private String shipping;
 
     @Column(nullable = false)
-    private String Address;
+    private String address;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id", referencedColumnName = "id", nullable = false)
+    private ProductsEntity product;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+    private UsersEntity user;
+
+    @Column
+    private LocalDateTime at_created;
+
+    @Column
+    private LocalDateTime at_updated;
 }
