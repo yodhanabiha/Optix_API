@@ -32,4 +32,8 @@ public interface CartsApi {
     @DeleteMapping("/{id}")
     ResponseEntity<APIResponse<String>>
     delete(@PathVariable Long id);
+
+    @DeleteMapping()
+    ResponseEntity<APIResponse<String>>
+    deleteByUser(@RequestHeader("Authorization") String token);
 }

@@ -1,5 +1,6 @@
 package org.nabiha.mobileapi.features.carts.service;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.nabiha.mobileapi.exception.NotFoundException;
 import org.nabiha.mobileapi.exception.ServiceBusinessException;
@@ -106,6 +107,19 @@ public class CartsService implements ICartsService {
             throw new ServiceBusinessException(ex.getMessage());
         }
         return "Carts with ID: " + id + " has been deleted";
+    }
+
+    @Transactional
+    @Override
+    public String deleteByUser(String email) throws ServiceBusinessException {
+        try {
+            UsersEntity users = usersRepository.findByEmail(email)
+                    .orElseThrow(() -> new NotFoundException("Users not found with email" + email));
+            repository.deleteAllByUser(users);
+        } catch (Exception ex) {
+            throw new ServiceBusinessException(ex.getMessage());
+        }
+        return "Carts with email:"+ email +" has been deleted";
     }
 }
 

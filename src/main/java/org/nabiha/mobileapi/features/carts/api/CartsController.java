@@ -75,4 +75,17 @@ public class CartsController implements CartsApi{
                 .build();
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @Override
+    public ResponseEntity<APIResponse<String>> deleteByUser(String token) {
+        String accessToken = token.substring(7);
+        String email = tokenProvider.validateToken(accessToken);
+        String delete = service.deleteByUser(email);
+        APIResponse<String> response = APIResponse
+                .<String>builder()
+                .status("SUCCESS")
+                .results(delete)
+                .build();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }

@@ -18,4 +18,6 @@ public interface ICartsService {
     CartsResponseDTO update(CartsRequestDTO cartsRequestDTO, Long id) throws ServiceBusinessException;
 
     String delete(Long id) throws ServiceBusinessException;
+
+    String deleteByUser(String email) throws ServiceBusinessException;
 }
