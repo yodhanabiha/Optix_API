@@ -3,6 +3,7 @@ package org.nabiha.mobileapi.features.histories.api;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.nabiha.mobileapi.dtos.APIResponse;
+import org.nabiha.mobileapi.features.histories.dtos.HistoriesRequestBatchDTO;
 import org.nabiha.mobileapi.features.histories.dtos.HistoriesRequestDTO;
 import org.nabiha.mobileapi.features.histories.dtos.HistoriesResponseDTO;
 import org.springframework.http.ResponseEntity;
@@ -14,8 +15,8 @@ import java.util.List;
 @RequestMapping("/histories")
 public interface HistoriesApi {
     @PostMapping()
-    ResponseEntity<APIResponse<HistoriesResponseDTO>>
-    create(@Valid @RequestBody HistoriesRequestDTO historiesRequestDTO);
+    ResponseEntity<APIResponse<List<HistoriesResponseDTO>>>
+    create(@Valid @RequestBody HistoriesRequestBatchDTO historiesRequestBatchDTO);
 
     @GetMapping()
     ResponseEntity<APIResponse<List<HistoriesResponseDTO>>>

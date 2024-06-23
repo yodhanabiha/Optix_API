@@ -3,6 +3,7 @@ package org.nabiha.mobileapi.features.histories.api;
 import lombok.AllArgsConstructor;
 import org.nabiha.mobileapi.config.TokenProvider;
 import org.nabiha.mobileapi.dtos.APIResponse;
+import org.nabiha.mobileapi.features.histories.dtos.HistoriesRequestBatchDTO;
 import org.nabiha.mobileapi.features.histories.dtos.HistoriesRequestDTO;
 import org.nabiha.mobileapi.features.histories.dtos.HistoriesResponseDTO;
 import org.nabiha.mobileapi.features.histories.service.IHistoriesService;
@@ -20,10 +21,10 @@ public class HistoriesController implements HistoriesApi{
     private final TokenProvider tokenProvider;
 
     @Override
-    public ResponseEntity<APIResponse<HistoriesResponseDTO>> create(HistoriesRequestDTO historiesRequestDTO) {
-        HistoriesResponseDTO historiesResponseDTO = service.createHistory(historiesRequestDTO);
-        APIResponse<HistoriesResponseDTO> response = APIResponse
-                .<HistoriesResponseDTO>builder()
+    public ResponseEntity<APIResponse<List<HistoriesResponseDTO>>> create(HistoriesRequestBatchDTO historiesRequestBatchDTO) {
+        List<HistoriesResponseDTO> historiesResponseDTO = service.createHistories(historiesRequestBatchDTO);
+        APIResponse<List<HistoriesResponseDTO>> response = APIResponse
+                .<List<HistoriesResponseDTO>>builder()
                 .status("SUCCESS")
                 .results(historiesResponseDTO)
                 .build();
