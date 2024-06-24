@@ -59,6 +59,17 @@ public class UsersController implements UsersApi{
     }
 
     @Override
+    public ResponseEntity<APIResponse<UsersAuthResponseDTO>> googleLogin(String idToken) {
+        UsersAuthResponseDTO usersAuthResponseDTO = service.loginWithGoogle(idToken);
+        APIResponse<UsersAuthResponseDTO> response = APIResponse
+                .<UsersAuthResponseDTO>builder()
+                .status("SUCCESS")
+                .results(usersAuthResponseDTO)
+                .build();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<APIResponse<UsersResponseDTO>> profile(String token) {
         String accessToken = token.substring(7);
         String email = tokenProvider.validateToken(accessToken);
@@ -77,6 +88,32 @@ public class UsersController implements UsersApi{
             String phone, String gender, String date_birth, MultipartFile image
     ) {
         UsersResponseDTO usersResponseDTO = service.update(id,name,phone,gender,date_birth, image);
+        APIResponse<UsersResponseDTO> response = APIResponse
+                .<UsersResponseDTO>builder()
+                .status("SUCCESS")
+                .results(usersResponseDTO)
+                .build();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<APIResponse<UsersResponseDTO>> update(String token, UsersRequestDTO usersRequestDTO) {
+        String accessToken = token.substring(7);
+        String email = tokenProvider.validateToken(accessToken);
+        UsersResponseDTO usersResponseDTO = service.update(email, usersRequestDTO);
+        APIResponse<UsersResponseDTO> response = APIResponse
+                .<UsersResponseDTO>builder()
+                .status("SUCCESS")
+                .results(usersResponseDTO)
+                .build();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<APIResponse<UsersResponseDTO>> updatePassword(String token, String password) {
+        String accessToken = token.substring(7);
+        String email = tokenProvider.validateToken(accessToken);
+        UsersResponseDTO usersResponseDTO = service.updatePassword(email, password);
         APIResponse<UsersResponseDTO> response = APIResponse
                 .<UsersResponseDTO>builder()
                 .status("SUCCESS")

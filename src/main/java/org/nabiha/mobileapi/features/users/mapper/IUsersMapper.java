@@ -10,4 +10,6 @@ public interface IUsersMapper {
     UsersResponseDTO convertToDTO(UsersEntity usersEntity);
 
     UsersEntity updateEntity(UsersEntity existingEntity, UsersRequestDTO updatedValues);
+
+    UsersEntity updatePassword(UsersEntity existingEntity, String Password);
 }

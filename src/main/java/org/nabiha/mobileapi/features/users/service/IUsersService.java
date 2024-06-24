@@ -13,11 +13,16 @@ public interface IUsersService {
 
     UsersResponseDTO findByEmail(String email);
 
+    UsersAuthResponseDTO loginWithGoogle(String idTokenString) throws ServiceBusinessException;
+
     List<UsersResponseDTO> findAll() throws ServiceBusinessException;
 
     UsersResponseDTO update(Long id, String name,
                             String phone, String gender,
                             String date_birth, MultipartFile image);
+
+    UsersResponseDTO update(String email, UsersRequestDTO usersRequestDTO) throws ServiceBusinessException;
+    UsersResponseDTO updatePassword(String email, String newPassword) throws ServiceBusinessException;
 
     String delete(Long id) throws ServiceBusinessException;
 

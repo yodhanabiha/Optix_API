@@ -50,10 +50,17 @@ public class UsersJpaMapper implements IUsersMapper {
         existingEntity.setPhone(updatedValues.getPhone());
         existingEntity.setImageurl(updatedValues.getImageurl());
         existingEntity.setRole(updatedValues.getRole());
-        existingEntity.setImageurl(updatedValues.getImageurl());
+        existingEntity.setImageurl(existingEntity.getImageurl());
         existingEntity.setAt_updated(LocalDateTime.now());
         existingEntity.setGender(updatedValues.getGender());
         existingEntity.setDate_birth(updatedValues.getDate_birth());
+        return existingEntity;
+    }
+
+    @Override
+    public UsersEntity updatePassword(UsersEntity existingEntity, String Password) {
+        existingEntity.setPassword(new BCryptPasswordEncoder().encode(Password));
+        existingEntity.setAt_updated(LocalDateTime.now());
         return existingEntity;
     }
 }
